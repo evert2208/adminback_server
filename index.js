@@ -17,6 +17,9 @@ app.use(express.json());
 //base de datos mongodb
 dbConnection();
 
+//Directorio Publico
+app.use(express.static('public'));
+
 //console.log(process.env);
 
 // admin_user
