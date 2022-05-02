@@ -5,14 +5,26 @@ const { response } = require('express');
 const bcrypt = require('bcryptjs');
 const res = require('express/lib/response');
 
-var getUsuarios = async(req, res) => {
+var getUsuarios = async(req, res = response) => {
 
-    var usuarios = await Usuario.find({}, 'nombre email role google');
+    var desde = Number(req.query.desde) || 0;
+
+
+    const [usuarios, total] = await Promise.all([
+        Usuario.find({}, 'nombre email role google img')
+        .skip(desde)
+        .limit(5),
+        Usuario.countDocuments()
+
+
+    ]);
+
+
 
     res.json({
         ok: true,
         usuarios,
-        uid: req.uid
+        total
     });
 };
 
