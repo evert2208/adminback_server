@@ -74,7 +74,7 @@ var crearUsuarios = async(req, res = response) => {
 
 };
 
-var actualizarUsuario = async(req, res = response) => {
+const actualizarUsuario = async(req, res = response) => {
 
     // TODO validar token y comprobar que el user es correcto
     var uid = req.params.id;
@@ -103,11 +103,19 @@ var actualizarUsuario = async(req, res = response) => {
             }
         }
 
-        campos.email = email;
+        if (!usuarioDB.google) {
+            campos.email = email;
+        } else if (usuarioDB.email !== email) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Usuario de google no puede cambiar el correo'
+            });
+        }
         const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, { new: true });
 
         res.json({
             ok: true,
+            msg: 'usuario actualizado correctamente',
             usuario: usuarioActualizado
         });
 
