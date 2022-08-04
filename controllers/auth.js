@@ -90,13 +90,13 @@ const googleSignIn = async(req, res = response) => {
             ok: true,
             token,
             menu: getMenufrontEnd(usuario.role)
-        })
+        });
     } catch (error) {
         res.status(401).json({
             ok: false,
             msg: 'Token no correcto',
 
-        })
+        });
     }
 
 
